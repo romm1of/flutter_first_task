@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
 
 class _RandomWordsState extends State<RandomWords> {
   final _suggestions = <WordPair>[];
-  final _saved = <WordPair>{};
+  Set<WordPair> _saved = {};
   final _biggerFont = const TextStyle(fontSize: 18.0);
 
   @override
@@ -31,12 +31,22 @@ class _RandomWordsState extends State<RandomWords> {
         ],
       ),
       body: _buildSuggestions(),
+      floatingActionButton: new Visibility(
+        visible: true,
+        child: new FloatingActionButton(
+          onPressed: () {
+            setState(() {
+              _saved = {};
+            });
+          },
+          child: new Icon(Icons.delete_forever, color: Colors.red),
+        ),
+      ),
     );
   }
 
   void _pushSaved() {
     Navigator.of(context).push(
-      // NEW lines from here...
       MaterialPageRoute<void>(
         builder: (BuildContext context) {
           final tiles = _saved.map(
@@ -60,7 +70,7 @@ class _RandomWordsState extends State<RandomWords> {
             body: ListView(children: divided),
           );
         },
-      ), // ...to here.
+      ),
     );
   }
 
